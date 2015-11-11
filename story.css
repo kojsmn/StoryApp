@@ -1,0 +1,124 @@
+.wrapper{
+display: flex;
+         flex-flow: row wrap;
+}
+
+/* We tell all items to be 100% width */
+.footer {
+flex: 1 100%;
+      text-align: center;
+
+}
+
+.identity{
+flex: 1 100%;
+      text-align: center;
+}
+
+.nav{
+flex: 1 40%;
+      text-align: center;
+      margin-top: 20px;
+      margin-left: 100px;
+      font-size: 30px;
+}
+
+.header{
+flex: 1 100%;
+      text-align: center;
+      font-size: 50px;
+}
+
+.list {
+flex: 1 30%;
+      margin-top: 20px;
+      font-size: 20px;
+      margin-bottom: 15px;
+}
+
+
+
+/* We rely on source order for mobile-first approach
+ * in this case:
+ * 1. header
+ * 2. nav
+ * 3. main
+ * 4. aside
+ * 5. footer
+ */
+
+/* Medium screens */
+@media all and (min-width: 300px) {
+    /* We tell both sidebars to share a row */
+    .nav { flex: 1 auto; }
+}
+
+/* Large screens */
+@media all and (min-width: 900px) {
+    /* We invert order of first sidebar and main
+     * And tell the main element to take twice as much width as the other two
+     * sidebars
+     */
+    .main { flex: 2 0px; }
+
+    .aside-1 { order: 1; }
+    .list    { order: 2; }
+    .identity { order: 3; }
+    .footer  { order: 4; }
+}
+
+
+
+
+
+div.content{
+width: 900px;
+margin: auto;
+}
+
+#email{
+    margin-top: 10px;
+}
+
+#user{
+}
+#submit{
+    margin-top: 10px;
+}
+
+#header{;
+height: 75px;
+width: 900px;
+       text-align: center;
+       font-size: 200%;
+}
+
+#leftMenu{
+float: left;
+width: 200px;
+height: 100px;
+}
+
+#rightArea{
+float: left;
+display: block;
+width: 700px;
+}
+
+#footerOne{
+float: right;
+padding: 5px;
+width: 300px;
+height: 300px;
+}
+
+#footerTwo{
+padding: 20px;
+float: left;
+width: 300px;
+height: 300px;
+}
+
+#stories{
+}
+
