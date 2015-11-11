@@ -35,20 +35,18 @@ public class Quiz extends HttpServlet {
             //	out.println("</body></html>");
             //	out.close();
 
-            if (user != null){
+//            if (!user.equalsIgnoreCase(null)){
                 request.setAttribute("user", user);
-            }
+    //        }
 
-            if (user != null){
+  //          if (!user.equalsIgnoreCase(null)){
                 request.setAttribute("email", email);
-            }
-            if (user != null && email != null){
-                //        getServletContext().getRequestDispatcher("Story1").forward(request,response);
-            }
+      //      }
 
             System.getProperties().put("user", user);
             System.getProperties().put("email", email);
-            try{
+ 
+           try {
                 generatePage(request, out);
             } catch(Exception e){
             }
