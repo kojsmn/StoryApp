@@ -16,21 +16,6 @@ version="3.1">
 <servlet-class>kojsmn.Story1</servlet-class>
 </servlet>
 
-<servlet>
-<servlet-name>Story2</servlet-name>
-<servlet-class>kojsmn.Story2</servlet-class>
-</servlet>
-
-<servlet>
-<servlet-name>Story3</servlet-name>
-<servlet-class>kojsmn.Story3</servlet-class>
-</servlet>
-
-<servlet>
-<servlet-name>Story4</servlet-name>
-<servlet-class>kojsmn.Story4</servlet-class>
-</servlet>
-
 <servlet-mapping>
 <servlet-name>Main</servlet-name>
 <url-pattern>/servlet/</url-pattern>
@@ -40,22 +25,5 @@ version="3.1">
 <servlet-name>Story1</servlet-name>
 <url-pattern>/servlet/*</url-pattern>
 </servlet-mapping>
-
-<servlet-mapping>
-<servlet-name>Story2</servlet-name>
-<url-pattern>/servlet/*</url-pattern>
-</servlet-mapping>
-
-<servlet-mapping>
-<servlet-name>Story3</servlet-name>
-<url-pattern>/servlet/*</url-pattern>
-</servlet-mapping>
-
-<servlet-mapping>
-<servlet-name>Story4</servlet-name>
-<url-pattern>/servlet/*</url-pattern>
-</servlet-mapping>
-
-
 
 		     </web-app>

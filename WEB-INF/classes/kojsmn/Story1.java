@@ -20,7 +20,6 @@ import java.net.URL;
 
 
 public class Story1 extends HttpServlet {
-    //        String sessionId;
     String user;
     String email;
 
@@ -31,13 +30,8 @@ public class Story1 extends HttpServlet {
 
             response.setContentType("text/html");
             PrintWriter out = response.getWriter();
-            //  out.println("<html><body>");
             user = request.getParameter("user");
-            //  out.println("Welcome "+user);
             email = request.getParameter("email");
-            //    out.println("EMAIL " + email);
-            //  out.println("</body></html>");
-            //  out.close();
 
             if (user != null){
                 request.setAttribute("user", user);
@@ -47,7 +41,6 @@ public class Story1 extends HttpServlet {
                 request.setAttribute("email", email);
             }
             if (user != null && email != null){
-                //        getServletContext().getRequestDispatcher("Story1").forward(request,response);
             }
 
             System.getProperties().put("user", user);
@@ -66,9 +59,6 @@ public class Story1 extends HttpServlet {
         PrintWriter out = response.getWriter();
         user = request.getParameter("user");
         email = request.getParameter("email");
-
-        //              sessionId = request.getParameter("sessionId");
-
 
         try {
             this.generatePage(request,out);
@@ -98,15 +88,14 @@ public class Story1 extends HttpServlet {
 
             /* Create a data-model */
             Map<String,String> root = new HashMap<String,String>();
-            root.put("WELCOME", "Welcome to Story Reader");
+
+            String currentURL = req.getRequestURL().toString();
+
+            root.put("WELCOME", currentURL);
             root.put("TIME", Long.toString(java.lang.System.currentTimeMillis()));
             root.put("REMOTEIP", req.getRemoteAddr());
             javax.servlet.http.HttpSession sess = req.getSession();
             root.put("SESSIONID", sess.getId());
-
-            //        Quiz q = inew Quiz();
-            //        String user = q.getUser();
-            //       String email = q.getEmail();
 
             String user = System.getProperty("user");
             String email = System.getProperty("email");
@@ -122,16 +111,63 @@ public class Story1 extends HttpServlet {
             else
                 root.put("EMAIL", null);
 
-            //        File sty = new
-            //        File("http://kojsmn.383.csi.miamioh.edu:8080/story/stories/story1.sty");
-
-            //      Scanner scan = new Scanner(sty);
             String content = "";
+            String content2 = "";
+
+            //            BufferedReader in = null;
+
+            String s1 = "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story1"; 
+            String s2 = "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story2";
+            String s3 = "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story3";
+            String s4 = "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story4";
+
 
             try {
                 URL story1 = new URL("http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/stories/story1.sty");
+                URL story2 = new URL("http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/stories/story2.sty");
+                URL story3 = new URL("http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/stories/story3.sty");
+                URL story4 = new URL("http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/stories/story4.sty");
+
                 BufferedReader in = new BufferedReader(new InputStreamReader(story1.openStream()));
-                String line = "";
+
+                if (currentURL.equals(s1.toString())){
+                    in = new BufferedReader(new InputStreamReader(story1.openStream()));
+                    root.put("PREVPAGE", null);
+                    root.put("NEXTPAGE", null);
+
+                    root.put("PREVSTORY", null);
+                    root.put("NEXTSTORY","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story2");
+
+                }
+                else if (currentURL.equals(s2.toString())){
+                    in = new BufferedReader(new InputStreamReader(story2.openStream()));
+                    root.put("PREVPAGE", null);
+                    root.put("NEXTPAGE", null);
+
+                    root.put("PREVSTORY", "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story1");
+                    root.put("NEXTSTORY","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story3");
+
+                }
+                else if (currentURL.equals(s3.toString())){
+                    in = new BufferedReader(new InputStreamReader(story3.openStream()));
+                    root.put("PREVPAGE", null);
+                    root.put("NEXTPAGE", null);
+
+                    root.put("PREVSTORY", "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story2");
+                    root.put("NEXTSTORY","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story4");
+
+                }
+                else if (currentURL.equals(s4.toString())){
+                    in = new BufferedReader(new InputStreamReader(story4.openStream()));
+                    root.put("PREVPAGE", null);
+                    root.put("NEXTPAGE", null);
+
+                    root.put("PREVSTORY", "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story3");
+                    root.put("NEXTSTORY", null);
+
+                }
+
+                String line = ""; 
 
                 while((line = in.readLine()) != null){
                     content = content + line;
@@ -145,21 +181,12 @@ public class Story1 extends HttpServlet {
                 System.out.println("IOException");
             }
 
-            //   while (scan.hasNextLine()){
-            //      content = content + scan.nextLine();
-            //  }
-
             root.put("TEST", "testttting");
             root.put("HOME","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/");
 
             root.put("CONTENT", content);
+
             root.put("YOTEST","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/stories/story1.sty");
-
-            root.put("PREVPAGE", null);
-            root.put("NEXTPAGE", null);
-
-            root.put("PREVSTORY", null);
-            root.put("NEXTSTORY","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story2");
 
             HttpSession session = req.getSession();
             Integer n = (Integer) session.getAttribute("visits");
