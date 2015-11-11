@@ -111,32 +111,18 @@ public class Quiz extends HttpServlet {
         String user = (String)session.getAttribute("user");
         String email = (String)session.getAttribute("email");
 
-        if (user != null){
+        if (user == null){
+            root.put("USER", null);
+        }
+        else {
             root.put("USER", user);
         }
-        else{   
-            if (session.getAttribute("user") != null){
-                user = (String) session.getAttribute("user");
-                root.put("USER", user);
-            }
-            else{
-                root.put("USER", null);
-            }
 
-        }
-
-        if (email != null){
-            root.put("EMAIL", email);
+        if (email == null){
+            root.put("EMAIL", null);
         }
         else{
-            if (session.getAttribute("email") != null){
-
-                email = (String) session.getAttribute("email");
                 root.put("EMAIL", email);
-            }
-            else{
-                root.put("EMAIL", null);
-            }
         }
 
 
