@@ -1,11 +1,11 @@
 /*
 
-    Michelle Kojs   
-    CSE 383
+   Michelle Kojs   
+   CSE 383
 
-    User Model
+   User Model
 
-*/
+ */
 
 package kojsmn.models;
 import java.util.*;
@@ -21,7 +21,7 @@ public class User{
 
     Database db = null;
 
-    public User(){
+    public User() throws IOException {
         db = new Database();
     }
 
@@ -32,7 +32,7 @@ public class User{
             stmt.setString(1, username);
             stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();
-        
+
             if (rs.next()){
                 id = rs.getInt(1);
                 return true;
@@ -44,10 +44,9 @@ public class User{
             System.err.println("Error on verifing User " + err.toString());
             return false;
         } 
-        return false;
     }
 
-    public boolean admin(String username, String password){
+    public boolean admin(String username){
         String sql;
         PreparedStatement stmt;
         ResultSet rs;
@@ -57,7 +56,7 @@ public class User{
             stmt = db.conn.prepareStatement(sql);
             stmt.setString(1, username);
             rs = stmt.executeQuery();
-            
+
             if (rs.next()){
                 admin = rs.getBoolean(1);
                 if (admin == true)
@@ -66,7 +65,7 @@ public class User{
         } catch (Exception err){
             System.err.println(err);
         }
-        
+
         return false;
     }
 
@@ -77,7 +76,7 @@ public class User{
         String sql;
         PreparedStatement stmt;
         ResultSet rs;
-        
+
         // See if username exists
         try {
             sql = "SELECT id FROM User WHERE username=?";
@@ -125,9 +124,20 @@ public class User{
         return "Username: " + username + " id: " + id;
     }
 
-     public static void main(String a[]) throws Exception {
+    public static void main(String a[]) throws Exception {
         User u = new User();
         System.out.println(u.toString());
 
+        // Test Cases
+        System.out.println("Testing test good - " + u.verifyUser("test", "test"));
+
+        System.out.println("Testing campbest fail - " + u.verifyUser("test","adsf"));
+        System.out.println("Testing campbest empty - " + u.verifyUser("campbest",""));
+        System.out.println("Testing empty - " + u.verifyUser("",""));
+
+        System.out.println("Testing invalid user - " + u.verifyUser("asdfasdf","asdfasdf"));
+        System.out.println("Testing admin - yes  " + u.admin("Michelle81"));
+        
+        System.out.println("Testing admin - no  " + u.admin("test"));
     }
 }

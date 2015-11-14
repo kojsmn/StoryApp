@@ -12,8 +12,8 @@ import java.text.*;
 import java.io.IOException;
 
 public class Database{
-    String username = "Michelle";
-    String password = "Michelle";
+    String username = "Michelle81";
+    String password = "Michelle81";
     String dbURL = "jdbc:mysql://localhost/StoryApp";
 
     public Connection conn = null;
