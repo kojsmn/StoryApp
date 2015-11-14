@@ -21,9 +21,11 @@ public class User{
     }
 
     public boolean verifyUser(String username, String password){
+        return false;
     }
 
     public boolean admin(String username, String password){
+        return false;
     }
 
     public void resetPassword(String username){
@@ -41,7 +43,7 @@ public class User{
 
      public static void main(String a[]) throws Exception {
         User u = new User();
-        System.out.println(sl.toString());
+        System.out.println(u.toString());
 
     }
 

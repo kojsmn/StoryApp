@@ -18,7 +18,7 @@ public class Database{
 
     public Connection conn = null;
 
-    public Database{
+    public Database() throws IOException{
         connect();
     }
 
@@ -42,9 +42,9 @@ public class Database{
             while (rs.next()){
                 String username = rs.getString("username");
                 String password = rs.getString("password");
-                int id = rs.getString("id");
+                int id = Integer.parseInt(rs.getString("id"));
         
-                sb.append(username + " " + password + " " + id "\n");
+                sb.append(username + " " + password + " " + id + "\n");
             }
         
             rs.close();
