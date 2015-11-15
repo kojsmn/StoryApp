@@ -24,16 +24,47 @@ public class Default extends HttpServlet {
     String user = "";
     String email = "";
 
+    protected void doPost(HttpServletRequest request, HttpServletResponse
+response) throws ServletException, IOException{
+        
+
+            response.setContentType("text/html");
+            PrintWriter out = response.getWriter();
+            
+            user = request.getParameter("user");
+            email = request.getParameter("email");
+
+            if (user != null){
+                request.setAttribute("user", user);
+            }
+
+            if (user != null){
+                request.setAttribute("email", email);
+            }
+
+            System.getProperties().put("user", user);
+            System.getProperties().put("email", email);
+            try{
+                generatePage(request, out);
+            } catch(Exception e){
+            }
+
+
+
+    }
+
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response, Configuration cfg) throws
         ServletException, IOException {
+
             this.cfg = cfg;
             PrintWriter out = response.getWriter();
-            try {
-                this.generatePage(request,out);
-            } catch (Exception e) {
-                e.printStackTrace(out);
+
+            try{
+                generatePage(request, out);
+            } catch(Exception e){
             }
+
         }
 
     public String getEmail(){
@@ -51,8 +82,6 @@ public class Default extends HttpServlet {
             Map<String,String> root = new HashMap<String,String>();
             HttpSession session = req.getSession();
             root.put("WELCOME", "Welcome to the Story Reader!");
-            root.put("TIME", Long.toString(java.lang.System.currentTimeMillis()));
-            root.put("REMOTEIP", req.getRemoteAddr());
             javax.servlet.http.HttpSession sess = req.getSession();
             root.put("SESSIONID", sess.getId());
 
@@ -88,10 +117,10 @@ public class Default extends HttpServlet {
                 }
             }
             root.put("TEST", "testttting");
-            root.put("STORYLINK1","http://kojsmn.383.csi.miamioh.edu:8080/story/servlet/story1");
-            root.put("STORYLINK2","http://kojsmn.383.csi.miamioh.edu:8080/story/servlet/story2");
-            root.put("STORYLINK3","http://kojsmn.383.csi.miamioh.edu:8080/story/servlet/story3");
-            root.put("STORYLINK4","http://kojsmn.383.csi.miamioh.edu:8080/story/servlet/story4");
+            root.put("STORYLINK1","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/story/1");
+            root.put("STORYLINK2","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/story/2");
+            root.put("STORYLINK3","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/story/3");
+            root.put("STORYLINK4","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/story/4");
 
             Integer n = (Integer) session.getAttribute("visits");
 
