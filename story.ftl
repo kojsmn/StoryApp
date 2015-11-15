@@ -15,6 +15,7 @@ href="http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/story.css">
 <div id="textHead">
 <h> Story Reader</h>
 <br>
+<h> ID: h${ID}h </h>
 <h> Title: ${TITLE} </h>
 <h> Author: ${AUTHOR} </h>
 </div>

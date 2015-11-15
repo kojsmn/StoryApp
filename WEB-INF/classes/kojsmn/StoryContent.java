@@ -22,7 +22,7 @@ public class StoryContent extends HttpServlet {
     public String idStr = null;
     public String pageStr = null;
     public int id = -1;
-    public int page = -1;
+    public int page = 0;
 
     public String user = "";
     public String email = "";
@@ -65,24 +65,34 @@ public class StoryContent extends HttpServlet {
             Map<String,String> root = new HashMap<String,String>();
 
             // Create story
-            Story s = new Story();
+            kojsmn.models.Story s = new kojsmn.models.Story();
+            String author;
+            String title;
     
             // Get Story author and title
-            Boolean gotStory = s.getStory(id);
-            String author = s.getAuthor(id);
-            String title = s.getTitle(id);            
+            boolean gotStory = s.getStory(2);
+            root.put("ID", idStr);
+        
+            if (gotStory){
+                author = s.getAuthor(id);
+                title = s.getTitle(id);            
+                root.put("AUTHOR", "TT");
+                root.put("TITLE", "FFF");
+
+            }
+            else {
+                root.put("AUTHOR", "test");
+                root.put("TITLE", "temp");
+            }
 
             // Get Page if on that...
             String content = null;
-            if (page != -1) {
+            if (page != 0) {
                 content = s.getPage(id, page);
             }
             
-            root.put("AUTHOR", author);
-            root.put("TITLE", title);
-            
             if (content != null){
-                root.put("CONTENT", content);
+                root.put("CONTENT", "ttt");
             }
 
 
@@ -112,7 +122,7 @@ public class StoryContent extends HttpServlet {
             root.put("HOME","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/kojsmn/");
 
             // See if there is a previous page
-            if (page != -1) {
+            if (page != 0) {
             
                 if (page > 1) { // there is a previous page
                     root.put("PREVPAGE", "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/kojsmn/story/" + id + "/" + (page-1));
@@ -130,7 +140,14 @@ public class StoryContent extends HttpServlet {
             }
             else {
                 root.put("PREVPAGE", null);
-                root.put("NEXTPAGE", null);
+
+                // See if there is a next page
+                if (s.getPage(id, page++) != null){
+                    root.put("NEXTPAGE", "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/kojsmn/story/" + id + "/" + (page++));
+                }
+                else {
+                    root.put("NEXTPAGE", null);
+                }
             }
 
             HttpSession session = req.getSession();
@@ -156,6 +173,16 @@ public class StoryContent extends HttpServlet {
     private String formatTime(long t) {
         DateFormat f = new SimpleDateFormat("HH:mm:ss MM/dd/yyyy");
         return f.format(t);
+    }
+
+    public static void main(String a[]) throws Exception{
+
+        Story s = new Story();
+
+        System.out.println("TEsting get Story: " + s.getStory(1) + " "  + s.toString(1));
+
+        System.out.println("Testing get page: " + s.getPage(1,1));
+
     }
 }
 

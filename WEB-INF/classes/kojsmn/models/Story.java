@@ -39,8 +39,8 @@ public class Story{
             rs = stmt.executeQuery();
 
             if (rs.next()){
-                title = rs.getString(1);
-                author = rs.getString(2);
+                this.title = rs.getString(1);
+                this.author = rs.getString(2);
                 return true;
             }
             else {
@@ -166,11 +166,11 @@ public class Story{
     }
 
     public String getAuthor(int id){
-        return author;
+        return this.author;
     }
 
     public String getTitle(int id){
-        return title;
+        return this.title;
     }
 
      public static void main(String a[]) throws Exception {
@@ -192,11 +192,11 @@ public class Story{
         // Test Cases
         System.out.println("Testing get Story: " + s1.getStory(1) + " " + s1.toString(1));
         System.out.println("Testing getPage: " + s1.getPage(1, 1));
-        int id = s1.addStory("Adding", "YO");
-        System.out.println("Testing addStory: " +  id);
-        System.out.println("Testing if story added: " + s1.getStory(id) + " " + s1.toString(id));
-        System.out.println("Testing deleteStory: " + s1.deleteStory(id));
-        System.out.println("Testing if story deleted: " + s1.getStory(id));
+//        int id = s1.addStory("Adding", "YO");
+//        System.out.println("Testing addStory: " +  id);
+//        System.out.println("Testing if story added: " + s1.getStory(id) + " " + s1.toString(id));
+// /       System.out.println("Testing deleteStory: " + s1.deleteStory(id));
+//        System.out.println("Testing if story deleted: " + s1.getStory(id));
 
         System.out.println(s1.toString(1));
     }
