@@ -165,6 +165,14 @@ public class Story{
         return title + " " + author + " " + id;
     }
 
+    public String getAuthor(int id){
+        return author;
+    }
+
+    public String getTitle(int id){
+        return title;
+    }
+
      public static void main(String a[]) throws Exception {
         Story s1 = new Story();
 

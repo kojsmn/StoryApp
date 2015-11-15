@@ -28,7 +28,7 @@ response) throws ServletException, IOException {
 
             /* Create and adjust the configuration singleton */
             cfg = new Configuration(Configuration.VERSION_2_3_22);
-            cfg.setDirectoryForTemplateLoading(new File("/opt/jetty/webapps/StoryApp"));
+            cfg.setDirectoryForTemplateLoading(new File("/opt/jetty/webapps/StoryApp/"));
             cfg.setDefaultEncoding("UTF-8");
         
         //get url
@@ -36,12 +36,14 @@ response) throws ServletException, IOException {
         URL url = new URL(request.getRequestURL().toString());
         String path = url.getPath();
         String parts[] = path.split("/");
+        
+        System.out.println(path);
 
-        if (parts.length >2) {
-            if ("story".equals(parts[2])) {
+        if (parts.length > 3) {
+            if ("story".equals(parts[3])) {
                 new StoryContent().doGet(request,response,cfg);
             }
-            else if ("about".equals(parts[2])) {
+            else if ("about".equals(parts[3])) {
 //                about(request,out);i
             }
             else 

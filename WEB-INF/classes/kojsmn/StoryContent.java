@@ -14,21 +14,48 @@ import java.util.ArrayList;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.net.*;
+import kojsmn.models.*;
 
 
 public class StoryContent extends HttpServlet {
     Configuration cfg = null;
+    public String idStr = null;
+    public String pageStr = null;
+    public int id = -1;
+    public int page = -1;
+
+    public String user = "";
+    public String email = "";
 
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response, Configuration cfg) throws
         ServletException, IOException {
+
             this.cfg = cfg;
+
             PrintWriter out = response.getWriter();
-            try {
-                this.generatePage(request,out);
-            } catch (Exception e) {
-                e.printStackTrace(out);
+            URL url = new URL(request.getRequestURL().toString());
+            String path = url.getPath();
+            String parts[] = path.split("/");
+        
+            idStr = parts[4];
+            id = Integer.parseInt(idStr);
+
+            if (parts.length > 5){
+                pageStr = parts[5];
+                page = Integer.parseInt(pageStr);
             }
+
+            try {
+
+                this.generatePage(request,out);
+
+            } catch (Exception e) {
+
+                e.printStackTrace(out);
+
+            }
+
         }
 
 
@@ -37,22 +64,37 @@ public class StoryContent extends HttpServlet {
             /* Create a data-model */
             Map<String,String> root = new HashMap<String,String>();
 
+            // Create story
+            Story s = new Story();
+    
+            // Get Story author and title
+            Boolean gotStory = s.getStory(id);
+            String author = s.getAuthor(id);
+            String title = s.getTitle(id);            
 
-            root.put("WELCOME", "Welcome to Story Reader");
-            root.put("TIME",
-                    Long.toString(java.lang.System.currentTimeMillis()));
-            root.put("REMOTEIP", req.getRemoteAddr());
-            javax.servlet.http.HttpSession sess = req.getSession();
-            root.put("SESSIONID", sess.getId());
+            // Get Page if on that...
+            String content = null;
+            if (page != -1) {
+                content = s.getPage(id, page);
+            }
+            
+            root.put("AUTHOR", author);
+            root.put("TITLE", title);
+            
+            if (content != null){
+                root.put("CONTENT", content);
+            }
 
-            //        Quiz q = inew Quiz();
-            //        String user = q.getUser();
-            //       String email = q.getEmail();
 
-            String user = System.getProperty("user");
-            String email = System.getProperty("email");
+            // Create User
+            User u = new User();
 
-            System.out.println("user afsd: " + user);
+            // Get Username
+//            String user = u.getUser();
+    
+  //          String user = System.getProperty("user");
+    //        String email = System.getProperty("email");
+
             if (user != null)
                 root.put("USER", user);
             else
@@ -63,59 +105,38 @@ public class StoryContent extends HttpServlet {
             else
                 root.put("EMAIL", null);
 
-            //        File sty = new
-            //        File("http://kojsmn.383.csi.miamioh.edu:8080/story/stories/story1.sty");
+            
+            
 
-            //      Scanner scan = new Scanner(sty);
-            String content = "";
+            // Prev, Next, and Home PAGE links
+            root.put("HOME","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/kojsmn/");
 
-            try {
-                URL story1 = new
-                    URL("http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/story/story1.sty");
-                BufferedReader in = new BufferedReader(new
-                        InputStreamReader(story1.openStream()));
-                String line = "";
-
-                while((line = in.readLine()) != null){
-                    content = content + line;
+            // See if there is a previous page
+            if (page != -1) {
+            
+                if (page > 1) { // there is a previous page
+                    root.put("PREVPAGE", "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/kojsmn/story/" + id + "/" + (page-1));
+                }   
+                else {
+                    root.put("PREVPAGE", null);
                 }
-
-                in.close();
-
-            } catch(MalformedURLException me){
-                System.out.println("malformed URL");
-            } catch(IOException ioe){
-                System.out.println("IOException");
+                // See if there is a next page
+                if (s.getPage(id, page++) != null){
+                    root.put("NEXTPAGE", "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/kojsmn/story/" + id + "/" + (page++));
+                }
+                else {
+                    root.put("NEXTPAGE", null);
+                }
+            }
+            else {
+                root.put("PREVPAGE", null);
+                root.put("NEXTPAGE", null);
             }
 
-            //   while (scan.hasNextLine()){
-            //      content = content + scan.nextLine();
-            //  }
-
-            root.put("TEST", "testttting");
-            root.put("HOME","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/story/");
-            root.put("CONTENT", content);
-            root.put("YOTEST",
-                    "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/story/story1.sty");
-
-            root.put("PREVPAGE", null);
-            root.put("NEXTPAGE", null);
-
-            root.put("PREVSTORY", null);
-            root.put("NEXTSTORY","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/story/story2");
-
             HttpSession session = req.getSession();
-            Integer n = (Integer) session.getAttribute("visits");
 
-            if (n==null)
-                n = new Integer(0);
-            int nn = n.intValue()+1;
-            n=new Integer(nn);
-            session.setAttribute("visits",new Integer(nn));
             session.setAttribute("user", user);
             session.setAttribute("email", email);
-
-            root.put("VISITS",n.toString());
 
             /* Get the template (uses cache internally) */
             Template temp = cfg.getTemplate("story.ftl");

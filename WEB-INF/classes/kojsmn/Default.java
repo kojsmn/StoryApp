@@ -17,12 +17,14 @@ import javax.servlet.*;
 import java.util.ArrayList;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import kojsmn.models.User;
 
 
-public class Default extends HttpServlet {
+public class Default extends HttpServlet { 
+
     Configuration cfg = null;
     String user = "";
-    String email = "";
+    String password = "";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse
 response) throws ServletException, IOException{
@@ -32,25 +34,33 @@ response) throws ServletException, IOException{
             PrintWriter out = response.getWriter();
             
             user = request.getParameter("user");
-            email = request.getParameter("email");
+            password = request.getParameter("email");
 
             if (user != null){
                 request.setAttribute("user", user);
             }
 
             if (user != null){
-                request.setAttribute("email", email);
+                request.setAttribute("email", password);
             }
 
             System.getProperties().put("user", user);
-            System.getProperties().put("email", email);
-            try{
+            System.getProperties().put("email", password);
+
+            // Check to see if user is in Database!
+            User u = new User();
+            Boolean currentUser = u.verifyUser(user, password);
+
+
+            // Add option to add User
+
+            try {
+
                 generatePage(request, out);
+
             } catch(Exception e){
+
             }
-
-
-
     }
 
     protected void doGet(HttpServletRequest request,
@@ -68,7 +78,7 @@ response) throws ServletException, IOException{
         }
 
     public String getEmail(){
-        return email;
+        return password;
     }
 
     public String getUser(){
@@ -117,10 +127,10 @@ response) throws ServletException, IOException{
                 }
             }
             root.put("TEST", "testttting");
-            root.put("STORYLINK1","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/story/1");
-            root.put("STORYLINK2","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/story/2");
-            root.put("STORYLINK3","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/story/3");
-            root.put("STORYLINK4","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/story/4");
+            root.put("STORYLINK1","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/kojsmn/story/1");
+            root.put("STORYLINK2","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/kojsmn/story/2");
+            root.put("STORYLINK3","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/kojsmn/story/3");
+            root.put("STORYLINK4","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/kojsmn/story/4");
 
             Integer n = (Integer) session.getAttribute("visits");
 

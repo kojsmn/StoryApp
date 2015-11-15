@@ -15,7 +15,8 @@ href="http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/story.css">
 <div id="textHead">
 <h> Story Reader</h>
 <br>
-<h> ${WELCOME} </h>
+<h> Title: ${TITLE} </h>
+<h> Author: ${AUTHOR} </h>
 </div>
 
 </header>
@@ -27,19 +28,21 @@ href="http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/story.css">
 <article class="nav">
 <a href=${HOME}>Home</a>
 <br>
-<#if (PREVSTORY??)>
-<a href=${PREVSTORY}>Previous Story</a>
+<#if (PREVPAGE??)>
+<a href=${PREVPAGE}>Previous Page</a>
 </#if>
 <br>
-<#if (NEXTSTORY??)>
-<a href=${NEXTSTORY}>Next Story</a>
+<#if (NEXTPAGE??)>
+<a href=${NEXTPage}>Next Page</a>
 </#if>
 <br>
 </article>
 
 <article class="list">
 <div id="content">
+<#if (CONTENT??)>
 ${CONTENT}
+</#if>
 </div>
 </article>
 
