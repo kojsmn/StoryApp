@@ -8,22 +8,12 @@ version="3.1">
 
 <servlet>
 <servlet-name>Main</servlet-name>
-<servlet-class>kojsmn.Quiz</servlet-class>
-</servlet>
-
-<servlet>
-<servlet-name>Story1</servlet-name>
-<servlet-class>kojsmn.Story1</servlet-class>
+<servlet-class>kojsmn.Dispatcher</servlet-class>
 </servlet>
 
 <servlet-mapping>
 <servlet-name>Main</servlet-name>
-<url-pattern>/servlet/</url-pattern>
-</servlet-mapping>
-
-<servlet-mapping>
-<servlet-name>Story1</servlet-name>
-<url-pattern>/servlet/*</url-pattern>
+<url-pattern>/*</url-pattern>
 </servlet-mapping>
 
 		     </web-app>
