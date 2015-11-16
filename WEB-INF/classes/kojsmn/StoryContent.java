@@ -15,24 +15,33 @@ import java.util.ArrayList;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.net.*;
+import java.sql.*;
 
 
 public class StoryContent extends HttpServlet {
-    Configuration cfg = null;
-    String idStr = null;
-    String pageStr = null;
-    int id = -1;
-    int page = 0;
+    public Configuration cfg = null;
+    public String idStr = null;
+    public String pageStr = null;
+    public int id = -1;
+    public int page = 1;
 
-    String user = "";
-    String email = "";
+    public String user = "";
+    public String email = "";
 
-    static String author = "";
-    static String title = "";
+    public String author = "";
+    public String title = "";
 
-//public Story sty = new Story();
+    Story story = null;
+
+    //public Story sty = new Story();
 
     public StoryContent(){
+
+        try {
+            story = new Story();
+        } catch(Exception e){
+            title = e + " ";
+        }
     }
 
     protected void doGet(HttpServletRequest request,
@@ -45,13 +54,20 @@ public class StoryContent extends HttpServlet {
             URL url = new URL(request.getRequestURL().toString());
             String path = url.getPath();
             String parts[] = path.split("/");
-        
+
             idStr = parts[4];
             id = Integer.parseInt(idStr);
 
             if (parts.length > 5){
                 pageStr = parts[5];
                 page = Integer.parseInt(pageStr);
+            }
+
+            // Get story stuff
+            boolean got = story.getStory(id);
+            if (got){
+                author = story.getAuthor(id);
+                title = story.getTitle(id);
             }
 
             try {
@@ -67,79 +83,27 @@ public class StoryContent extends HttpServlet {
         }
 
 
-    public static void getValues(){ 
-        int id = 1;
-        Story s = null;
-            try {
-                s = new Story();
-            } catch (Exception err){
-                System.out.println("error: " + err);
-                }
-
-            // Get Story author and title
-            boolean gotStory = s.getStory(1);
-   
-            System.out.println(gotStory);
- 
-            if (gotStory){
-                author = s.getAuthor(id);
-                title = s.getTitle(id);
-                System.out.println(author + " " + title);
-
-
-            }
-
-
-    }
 
 
     public void generatePage(HttpServletRequest req, PrintWriter out) throws
         Exception {
 
-             /* Create a data-model */
+            /* Create a data-model */
             Map<String,String> root = new HashMap<String,String>();
 
-           getValues();        
-//    Story s = null;
-   // i//        Story s = new Story(id);
-    //        author = s.getAuthor(id);
-     //       title = s.getTitle(id);
-        
-  //          try {
-   //             s = new Story();
-    //        } catch (Exception err){
-     //           System.out.println("error: " + err);
-      //          root.put("AUTHOR", "ERROR");
-       //     }
 
-            // Create story
-        //    String author;
-         //   String title;
-    
-            // Get Story author and title
-          //  boolean gotStory = s.getStory(1);
             root.put("ID", idStr);
-        
-          //  if (gotStory){
-      //          author = s.getAuthor(id);
-      //          title = s.getTitle(id);            
-                root.put("AUTHOR", author);
-                root.put("TITLE", title);
 
-//            }
-  //          else {
-   //             root.put("AUTHOR", gotStory + " ");
-    //            root.put("TITLE", "temp");
-     //       }
+            root.put("AUTHOR", author);
+            root.put("TITLE", title);
+
 
             // Get Page if on that...
             String content = null;
-            if (page != 0) {
-        //        content = s.getPage(id, page);
-            }
-            
+            content = story.getPage(id, page);
+
             if (content != null){
-                root.put("CONTENT", "ttt");
+                root.put("CONTENT", content);
             }
 
 
@@ -147,10 +111,10 @@ public class StoryContent extends HttpServlet {
             User u = new User();
 
             // Get Username
-//            String user = u.getUser();
-    
-  //          String user = System.getProperty("user");
-    //        String email = System.getProperty("email");
+            //            String user = u.getUser();
+
+            //          String user = System.getProperty("user");
+            //        String email = System.getProperty("email");
 
             if (user != null)
                 root.put("USER", user);
@@ -162,39 +126,26 @@ public class StoryContent extends HttpServlet {
             else
                 root.put("EMAIL", null);
 
-            
-            
+
+
 
             // Prev, Next, and Home PAGE links
-            root.put("HOME","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/kojsmn/");
+            root.put("HOME","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/");
 
             // See if there is a previous page
-            if (page != 0) {
-            
-                if (page > 1) { // there is a previous page
-                    root.put("PREVPAGE", "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/kojsmn/story/" + id + "/" + (page-1));
-                }   
-                else {
-                    root.put("PREVPAGE", null);
-                }
-                // See if there is a next page
-          //      if (s.getPage(id, page++) != null){
-            //        root.put("NEXTPAGE", "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/kojsmn/story/" + id + "/" + (page++));
-              //  }
-             //   else {
-                    root.put("NEXTPAGE", null);
-             //   }
-            }
+
+            if (page > 1) { // there is a previous page
+                root.put("PREVPAGE", "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/" + id + "/" + (page-1));
+            }   
             else {
                 root.put("PREVPAGE", null);
-
-                // See if there is a next page
-            //    if (s.getPage(id, page++) != null){
-              //      root.put("NEXTPAGE", "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/kojsmn/story/" + id + "/" + (page++));
-               // }
-              //  else {
-              //      root.put("NEXTPAGE", null);
-              //  }
+            }
+            // See if there is a next page
+            if (story.getPage(id, (page+1)) != null){
+                root.put("NEXTPAGE", "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/" + id + "/" + (page+1));
+            }
+            else {
+                root.put("NEXTPAGE", null);
             }
 
             HttpSession session = req.getSession();
@@ -224,12 +175,9 @@ public class StoryContent extends HttpServlet {
 
     public static void main(String a[]) throws Exception{
 
-        StoryContent st = new StoryContent();
-
-        st.getValues();
         //System.out.println("TEsting get Story: " + sty.getStory(1) + " "  + sty.toString(1));
 
-//        System.out.println("Testing get page: " + sty.getPage(1,1));
+        //        System.out.println("Testing get page: " + sty.getPage(1,1));
 
     }
 }

@@ -127,10 +127,10 @@ response) throws ServletException, IOException{
                 }
             }
             root.put("TEST", "testttting");
-            root.put("STORYLINK1","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/kojsmn/story/1");
-            root.put("STORYLINK2","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/kojsmn/story/2");
-            root.put("STORYLINK3","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/kojsmn/story/3");
-            root.put("STORYLINK4","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/kojsmn/story/4");
+            root.put("STORYLINK1","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/1/1");
+            root.put("STORYLINK2","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/2/1");
+            root.put("STORYLINK3","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/3/1");
+            root.put("STORYLINK4","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/4/1");
 
             Integer n = (Integer) session.getAttribute("visits");
 

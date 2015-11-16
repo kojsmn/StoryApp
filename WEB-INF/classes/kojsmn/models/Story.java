@@ -1,11 +1,11 @@
 /*
 
-    Michelle Kojs
-    CSE 383
+   Michelle Kojs
+   CSE 383
 
-    Story Model
+   Story Model
 
-*/
+ */
 
 package kojsmn.models;
 import java.util.*;
@@ -21,7 +21,7 @@ public class Story{
     public int numOfPages = 0;
     public String content = "";
 
-    Database db = null;
+    public Database db = null;
 
     public Story() throws IOException {
         db = new Database();
@@ -30,18 +30,15 @@ public class Story{
     public Story(int id) throws IOException {
         db = new Database();
         this.id = id;
-        
-        if (getStory(id)){
-            this.title = getTitle(id);
-            this.author = getAuthor(id);
-        }
-        
+
+
     }
 
     public boolean getStory(int id){
-        String sql;
+        String sql = "";
         PreparedStatement stmt;
         ResultSet rs;
+        this.id = id;
 
         try {
             sql = "SELECT Title, Author FROM Stories WHERE id=?";
@@ -76,7 +73,7 @@ public class Story{
             stmt.setInt(1, id);
             stmt.setInt(2, page);
             rs = stmt.executeQuery();
-        
+
             if (rs.next()){
                 String pageContent = rs.getString(1);
                 return pageContent;
@@ -85,12 +82,12 @@ public class Story{
             System.err.println("Error getting page content " + err);
             return null;    
         }   
-        
+
         return null;
- 
+
     }
 
-   
+
 
     public int addStory(String title, String author) throws IOException {
         String sql;
@@ -102,7 +99,7 @@ public class Story{
             stmt = db.conn.prepareStatement(sql);
             stmt.setString(1, title);
             rs = stmt.executeQuery();
-        
+
             if (rs.next()){
                 System.err.println("Error adding Story");
                 return -1;
@@ -184,32 +181,32 @@ public class Story{
         return this.title;
     }
 
-     public static void main(String a[]) throws Exception {
-        Story s1 = new Story();
+    public static void main(String a[]) throws Exception {
+        //   Story s1 = new Story();
 
-//        System.out.println("Dump story");
-//        HashMap<Integer,String> stories = sl.getStoryList();
-//        for (Integer pki:stories.keySet()) {
-//            int pk = pki.intValue();
-//            System.out.println("Story " + stories.get(pk));
-//            int n = sl.getNumPages(pk);
-//            for (int j=1;j<n+1;j++ ){
-//                String contents = sl.getPage(pk,j);
-//                System.out.println("page: " + contents);
-//            }
-//            System.out.println();
-//        }
+        //        System.out.println("Dump story");
+        //        HashMap<Integer,String> stories = sl.getStoryList();
+        //        for (Integer pki:stories.keySet()) {
+        //            int pk = pki.intValue();
+        //            System.out.println("Story " + stories.get(pk));
+        //            int n = sl.getNumPages(pk);
+        //            for (int j=1;j<n+1;j++ ){
+        //                String contents = sl.getPage(pk,j);
+        //                System.out.println("page: " + contents);
+        //            }
+        //            System.out.println();
+        //        }
 
         // Test Cases
-        System.out.println("Testing get Story: " + s1.getStory(1) + " " + s1.toString(1));
-        System.out.println("Testing getPage: " + s1.getPage(1, 1));
-//        int id = s1.addStory("Adding", "YO");
-//        System.out.println("Testing addStory: " +  id);
-//        System.out.println("Testing if story added: " + s1.getStory(id) + " " + s1.toString(id));
-// /       System.out.println("Testing deleteStory: " + s1.deleteStory(id));
-//        System.out.println("Testing if story deleted: " + s1.getStory(id));
+        //        System.out.println("Testing get Story: " + s1.getStory(1) + " " + s1.toString(1));
+        //       System.out.println("Testing getPage: " + s1.getPage(1, 1));
+        //        int id = s1.addStory("Adding", "YO");
+        //        System.out.println("Testing addStory: " +  id);
+        //        System.out.println("Testing if story added: " + s1.getStory(id) + " " + s1.toString(id));
+        // /       System.out.println("Testing deleteStory: " + s1.deleteStory(id));
+        //        System.out.println("Testing if story deleted: " + s1.getStory(id));
 
-        System.out.println(s1.toString(1));
+        //     System.out.println(s1.toString(1));
     }
 }
 

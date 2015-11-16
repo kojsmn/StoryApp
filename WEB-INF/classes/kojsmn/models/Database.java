@@ -16,6 +16,8 @@ public class Database{
     String password = "Michelle81";
     String dbURL = "jdbc:mysql://localhost/StoryApp";
 
+    public String e = "SS";
+
     public Connection conn = null;
 
     public Database() throws IOException{
@@ -27,8 +29,10 @@ public class Database{
         try{
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(dbURL, username, password);
+            e = "yo";
         } catch(Exception err) {
             System.err.println("Error: " + err);
+            e =  "from db: " + err + " " + conn;
         }         
     }
 

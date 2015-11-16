@@ -34,7 +34,7 @@ href="http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/story.css">
 </#if>
 <br>
 <#if (NEXTPAGE??)>
-<a href=${NEXTPage}>Next Page</a>
+<a href=${NEXTPAGE}>Next Page</a>
 </#if>
 <br>
 </article>
