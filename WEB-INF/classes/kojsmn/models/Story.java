@@ -27,6 +27,17 @@ public class Story{
         db = new Database();
     }
 
+    public Story(int id) throws IOException {
+        db = new Database();
+        this.id = id;
+        
+        if (getStory(id)){
+            this.title = getTitle(id);
+            this.author = getAuthor(id);
+        }
+        
+    }
+
     public boolean getStory(int id){
         String sql;
         PreparedStatement stmt;
