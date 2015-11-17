@@ -39,6 +39,7 @@ public class StoryContent extends HttpServlet {
 
         try {
             story = new Story();
+            this.user = new Default().getUser();
         } catch(Exception e){
             title = e + " ";
         }
@@ -108,7 +109,6 @@ public class StoryContent extends HttpServlet {
 
 
             // Create User
-            User u = new User();
 
             // Get Username
             //            String user = u.getUser();
@@ -116,18 +116,14 @@ public class StoryContent extends HttpServlet {
             //          String user = System.getProperty("user");
             //        String email = System.getProperty("email");
 
+            HttpSession session = req.getSession();
+
+            user = (String)req.getAttribute("user");
+
             if (user != null)
-                root.put("USER", user);
+                root.put("USER", user + " yo");
             else
                 root.put("USER", null);
-
-            if (email != null)
-                root.put("EMAIL", email);
-            else
-                root.put("EMAIL", null);
-
-
-
 
             // Prev, Next, and Home PAGE links
             root.put("HOME","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/");
@@ -148,10 +144,6 @@ public class StoryContent extends HttpServlet {
                 root.put("NEXTPAGE", null);
             }
 
-            HttpSession session = req.getSession();
-
-            session.setAttribute("user", user);
-            session.setAttribute("email", email);
 
             /* Get the template (uses cache internally) */
             Template temp = cfg.getTemplate("story.ftl");

@@ -25,6 +25,16 @@
 
 <article class="list">
 <div id="stories">
+<#if (!STORYLINK1??)>
+Story 1
+<br>
+Story 2
+<br>
+Story 3
+<br>
+Story 4
+<br>
+<#else>
 <a href=${STORYLINK1}>Story 1</a>
 <br>
 <a href=${STORYLINK2}>Story 2</a>
@@ -33,27 +43,27 @@
 <br>
 <a href=${STORYLINK4}>Story 4</a>
 <br>
+</#if>
 </div>
 </article>
 
 <article class="identity">
-<#if (!EMAIL??) && (!USER??)>
-<FORM METHOD='Post' ACTION="">
+<#if (!CURRENTUSER??)>
+<FORM METHOD='Get' ACTION="">
 <div id="user">
 UserName:
 <input type='text' size=25 name='user'>
 </div>
 <div id="email">
-Email:
-<input type='text' size=25 name='email'>
+Password:
+<input type='text' size=25 name='password'>
 </div>
 <div id="submit">
 <input type='submit' value='Enter'>
 </div>
 </FORM>
 <#else>
-<tr><td>Email:</td><td>${EMAIL}</td></td>
-<tr><td>Name:</td><td>${USER}</td></td>
+<tr><td>Name:</td><td>${CURRENTUSER}</td></td>
 
 </#if>
 </div>

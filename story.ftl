@@ -50,24 +50,8 @@ ${CONTENT}
 
 <article class="identity">
 
-<#if (!EMAIL??) && (!USER??)>
-<FORM METHOD='Post' ACTION="">
-<div id="user">
-Username:
-<input type='text' size=25 name='user'>
-</div>
-<div id="email">
-Email:
-<input type='text' size=25 name='email'>
-</div>
-<div id="submit">
-<input type='submit' value='Enter'>
-</div>
-</FORM>
+<#if (!USER??)>
 <#else>
-<div id="email">
-<tr><td>Email:</td><td>${EMAIL}</td></td>
-</div>
 <div id="user">
 <tr><td>Name:</td><td>${USER}</td></td>
 </div>

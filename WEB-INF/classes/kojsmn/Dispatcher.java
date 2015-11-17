@@ -5,6 +5,7 @@
  */
 
 package kojsmn;
+import kojsmn.Default;
 import freemarker.template.*;
 import java.util.*;
 import java.io.*;
@@ -17,6 +18,7 @@ import java.net.*;
 
 public class Dispatcher extends HttpServlet {
     public Configuration cfg = null;
+    public String user = "";
 
     protected void doGet(HttpServletRequest request, HttpServletResponse
 response) throws ServletException, IOException {
@@ -43,12 +45,19 @@ response) throws ServletException, IOException {
             if ("story".equals(parts[3])) {
                 new StoryContent().doGet(request,response,cfg);
             }
-            else if ("about".equals(parts[3])) {
-//                about(request,out);i
-            }
-            else 
+            else {
                 new Default().doGet(request,response,cfg);
+            }
+                
         } else
             new Default().doGet(request,response,cfg);
+    }
+
+    public String getUser(){
+        return this.user;
+    }
+
+    public void setUser(String user){
+        this.user = user;
     }
 }

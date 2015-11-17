@@ -25,42 +25,12 @@ public class Default extends HttpServlet {
     Configuration cfg = null;
     String user = "";
     String password = "";
+    boolean currentUser = false;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse
-response) throws ServletException, IOException{
-        
-
-            response.setContentType("text/html");
-            PrintWriter out = response.getWriter();
-            
-            user = request.getParameter("user");
-            password = request.getParameter("email");
-
-            if (user != null){
-                request.setAttribute("user", user);
-            }
-
-            if (user != null){
-                request.setAttribute("email", password);
-            }
-
-            System.getProperties().put("user", user);
-            System.getProperties().put("email", password);
-
-            // Check to see if user is in Database!
-            User u = new User();
-            Boolean currentUser = u.verifyUser(user, password);
+            response) throws ServletException, IOException{
 
 
-            // Add option to add User
-
-            try {
-
-                generatePage(request, out);
-
-            } catch(Exception e){
-
-            }
     }
 
     protected void doGet(HttpServletRequest request,
@@ -69,6 +39,24 @@ response) throws ServletException, IOException{
 
             this.cfg = cfg;
             PrintWriter out = response.getWriter();
+
+
+            // Check User
+            response.setContentType("text/html");
+            user = request.getParameter("user");
+            password = request.getParameter("password");
+
+            if (user != null){
+                request.setAttribute("user", user);
+            }
+
+            // Check to see if user is in Database!
+            User u = new User();
+            currentUser = u.verifyUser(user, password);
+            
+            if (currentUser){
+                // update to current User so that username can be tracked
+            }                
 
             try{
                 generatePage(request, out);
@@ -87,7 +75,7 @@ response) throws ServletException, IOException{
 
     private void generatePage(HttpServletRequest req, PrintWriter out) throws
         Exception {
-            
+
             /* Create a data-model */
             Map<String,String> root = new HashMap<String,String>();
             HttpSession session = req.getSession();
@@ -95,43 +83,18 @@ response) throws ServletException, IOException{
             javax.servlet.http.HttpSession sess = req.getSession();
             root.put("SESSIONID", sess.getId());
 
+            if (currentUser) {
+                root.put("CURRENTUSER", user);           
+                this.user = user; 
+             
 
-            String user = (String)session.getAttribute("user");
-            String email = (String)session.getAttribute("email");
-
-            if (user != null){
-                root.put("USER", user);
-            }
-            else{
-                if (session.getAttribute("user") != null){
-                    user = (String) session.getAttribute("user");
-                    root.put("USER", user);
-                }
-                else{
-                    root.put("USER", null);
-                }
-
-            }
-
-            if (email != null){
-                root.put("EMAIL", email);
-            }
-            else{
-                if (session.getAttribute("email") != null){
-
-                    email = (String) session.getAttribute("email");
-                    root.put("EMAIL", email);
-                }
-                else{
-                    root.put("EMAIL", null);
-                }
-            }
-            root.put("TEST", "testttting");
             root.put("STORYLINK1","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/1/1");
             root.put("STORYLINK2","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/2/1");
             root.put("STORYLINK3","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/3/1");
             root.put("STORYLINK4","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/4/1");
 
+}
+            
             Integer n = (Integer) session.getAttribute("visits");
 
             if (n==null)
@@ -141,7 +104,7 @@ response) throws ServletException, IOException{
 
             session.setAttribute("visits",new Integer(nn));
             session.setAttribute("user", user);
-            session.setAttribute("email", email);
+            //          session.setAttribute("email", email);
 
             root.put("VISITS",n.toString());
 
