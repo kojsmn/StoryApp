@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import kojsmn.models.*;
+import java.net.*;
 
 
 public class Edit extends HttpServlet { 
@@ -27,7 +28,8 @@ public class Edit extends HttpServlet {
     String password = "";
     boolean currentUser = false;
     boolean admin = false;
-
+    int id = 0;
+    int page = 0;
 
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response, Configuration cfg) throws
@@ -38,12 +40,23 @@ public class Edit extends HttpServlet {
 
 
             // Check to see if user is in Database!
-                User u = new User();
-                String userCurr = u.getCurrentUser();
-          
-                this.user = userCurr;
-                currentUser = true;
-            
+            User u = new User();
+            String userCurr = u.getCurrentUser();
+
+            this.user = userCurr;
+            currentUser = true;
+
+            //get url
+            URL url = new URL(request.getRequestURL().toString());
+            String path = url.getPath();
+            String parts[] = path.split("/");
+
+            id = Integer.parseInt(parts[4]);
+            page = Integer.parseInt(parts[5]);
+
+            System.out.println(path);
+
+
             try{
                 generatePage(request, out);
             } catch(Exception e){
@@ -67,35 +80,24 @@ public class Edit extends HttpServlet {
             HttpSession session = req.getSession();
             javax.servlet.http.HttpSession sess = req.getSession();
 
-                root.put("CURRENTUSER", user);           
-                this.user = user; 
-             
-                // Get all the stories
-                Story s = new Story();
-                HashMap<Integer, String> list = s.getStoryList();
+            root.put("CURRENTUSER", user);           
+            this.user = user; 
 
-             
-            root.put("STORYLINK1","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/1/1");
-            root.put("STORYLINK2","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/2/1");
-            root.put("STORYLINK3","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/3/1");
-            root.put("STORYLINK4","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/4/1");
-
-            
-            Integer n = (Integer) session.getAttribute("visits");
-
-            if (n==null)
-                n = new Integer(0);
-            int nn = n.intValue()+1;
-            n=new Integer(nn);
-
-            session.setAttribute("visits",new Integer(nn));
             session.setAttribute("user", user);
-            //          session.setAttribute("email", email);
 
-            root.put("VISITS",n.toString());
+            Story s = new Story();
+            boolean got = s.getStory(id);
+            String content = s.getPage(id, page);
+            String title = s.getTitle(id);  
+            String author = s.getAuthor(id);
+
+            root.put("TITLE", title);
+            root.put("AUTHOR", author);
+            root.put("CONTENT", content);
+            root.put("ADMIN", "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/admin");
 
             /* Get the template (uses cache internally) */
-                Template temp = cfg.getTemplate("quiz.ftl");
+            Template temp = cfg.getTemplate("edit.ftl");
 
             /* Merge data-model with template */
             temp.process(root, out);

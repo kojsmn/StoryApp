@@ -59,10 +59,10 @@ public class Default extends HttpServlet {
 
 
 
-            try{
-                generatePage(request, out);
-            } catch(Exception e){
-            }
+        try{
+            generatePage(request, out);
+        } catch(Exception e){
+        }
 
 
     }
@@ -98,10 +98,10 @@ public class Default extends HttpServlet {
                 currentUser = true;
             }
 
-                try{
-                    generatePage(request, out);
-                } catch(Exception e){
-                }
+            try{
+                generatePage(request, out);
+            } catch(Exception e){
+            }
 
         }
 
@@ -127,11 +127,11 @@ public class Default extends HttpServlet {
                 root.put("CURRENTUSER", user);           
                 this.user = user; 
 
-  // Get all the stories
+                // Get all the stories
                 Story s = new Story();
-            HashMap<String, String> stories = s.getStoryList();
+                HashMap<String, String> stories = s.getStoryList();
 
-            root.put("STORIES", stories);
+                root.put("STORIES", stories);
 
             }
 

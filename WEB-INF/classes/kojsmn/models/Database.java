@@ -1,9 +1,9 @@
 /* 
-    Michelle Kojs
-    CSE 383
+   Michelle Kojs
+   CSE 383
 
-    Database Model
-*/
+   Database Model
+ */
 
 package kojsmn.models;
 import java.sql.*;
@@ -25,7 +25,7 @@ public class Database{
     }
 
     public void connect() throws IOException{
-        
+
         try{
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(dbURL, username, password);
@@ -42,15 +42,15 @@ public class Database{
             Statement stmt = conn.createStatement();
             String sql = "select username, password, id from user";
             ResultSet rs = stmt.executeQuery(sql);
-    
+
             while (rs.next()){
                 String username = rs.getString("username");
                 String password = rs.getString("password");
                 int id = Integer.parseInt(rs.getString("id"));
-        
+
                 sb.append(username + " " + password + " " + id + "\n");
             }
-        
+
             rs.close();
             stmt.close();
         } catch (Exception err) {
@@ -60,6 +60,6 @@ public class Database{
         }
         return sb.toString();
     }
- 
+
 }
 

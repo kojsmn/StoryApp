@@ -110,7 +110,7 @@ public class StoryContent extends HttpServlet {
 
             // Create User
             User u = new User();
-        
+
             // Get current User
             user = u.getCurrentUser();
 
@@ -122,7 +122,7 @@ public class StoryContent extends HttpServlet {
 
             HttpSession session = req.getSession();
 
-//            user = (String)req.getAttribute("user");
+            //            user = (String)req.getAttribute("user");
 
             if (user != null)
                 root.put("USER", user + " yo");

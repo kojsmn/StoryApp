@@ -1,9 +1,9 @@
 /*
 
-Michelle Kojs
+   Michelle Kojs
 
 
-*/
+ */
 
 package kojsmn;
 import java.io.*;

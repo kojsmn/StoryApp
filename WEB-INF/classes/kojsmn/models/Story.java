@@ -154,7 +154,7 @@ public class Story{
             stmt.setInt(1, id);
             stmt.executeUpdate();
 
-             sql = "DELETE FROM Stories WHERE title=?";
+            sql = "DELETE FROM Stories WHERE title=?";
             stmt = db.conn.prepareStatement(sql);
             stmt.setString(1, title);
             stmt.executeUpdate();
@@ -170,7 +170,7 @@ public class Story{
                 System.err.println("Error deleting Story");
                 return false;
             }
-                return true;
+            return true;
         } catch (Exception err){
             System.err.println("Error deleting Story " + err);
             return false;

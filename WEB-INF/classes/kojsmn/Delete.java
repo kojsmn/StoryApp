@@ -39,19 +39,19 @@ public class Delete extends HttpServlet {
 
 
             // Check to see if user is in Database!
-           
+
             // get story id
-        URL url = new URL(request.getRequestURL().toString());
-        String path = url.getPath();
-        String parts[] = path.split("/");
+            URL url = new URL(request.getRequestURL().toString());
+            String path = url.getPath();
+            String parts[] = path.split("/");
 
-        System.out.println(path);
+            System.out.println(path);
 
-        id = Integer.parseInt(parts[5]);
-        
-        Story s = new Story();
-        s.delete(request.getParameter("story"));
-             
+            id = Integer.parseInt(parts[5]);
+
+            Story s = new Story();
+            s.delete(request.getParameter("story"));
+
         }
 
     private void generatePage(HttpServletRequest req, PrintWriter out) throws
@@ -62,7 +62,7 @@ public class Delete extends HttpServlet {
             HttpSession session = req.getSession();
             javax.servlet.http.HttpSession sess = req.getSession();
             /* Get the template (uses cache internally) */
-                Template temp = cfg.getTemplate("quiz.ftl");
+            Template temp = cfg.getTemplate("quiz.ftl");
 
             /* Merge data-model with template */
             temp.process(root, out);

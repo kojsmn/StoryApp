@@ -30,44 +30,44 @@ public class Manage extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse
             response, Configuration cfg) throws ServletException, IOException{
-         this.cfg = cfg;
-            PrintWriter out = response.getWriter();
+        this.cfg = cfg;
+        PrintWriter out = response.getWriter();
 
 
-            // Check User
-            response.setContentType("text/html");
-            user = request.getParameter("user");
-            password = request.getParameter("password");
+        // Check User
+        response.setContentType("text/html");
+        user = request.getParameter("user");
+        password = request.getParameter("password");
 
-            if (user != null){
-                request.setAttribute("user", user);
-            }
+        if (user != null){
+            request.setAttribute("user", user);
+        }
 
-            // Check to see if user is in Database!
-                User u = new User();
-                currentUser = u.verifyUser(user, password);
-                String userCurr = u.getCurrentUser();
-                admin = u.admin(user);
+        // Check to see if user is in Database!
+        User u = new User();
+        currentUser = u.verifyUser(user, password);
+        String userCurr = u.getCurrentUser();
+        admin = u.admin(user);
 
-            if (currentUser){
-                u.updateToCurrentUser(user);
-            }
-            else if (userCurr != null){
-                this.user = userCurr;
-                currentUser = true;
-            }
+        if (currentUser){
+            u.updateToCurrentUser(user);
+        }
+        else if (userCurr != null){
+            this.user = userCurr;
+            currentUser = true;
+        }
 
-             if (admin){
-                new Admin().doGet(request, response, cfg);
-            }
-            else {
+        if (admin){
+            new Admin().doGet(request, response, cfg);
+        }
+        else {
 
 
             try{
                 generatePage(request, out);
             } catch(Exception e){
             }
-            }
+        }
 
 
     }
@@ -90,11 +90,11 @@ public class Manage extends HttpServlet {
             }
 
             // Check to see if user is in Database!
-                User u = new User();
-                currentUser = u.verifyUser(user, password);
-                String userCurr = u.getCurrentUser();
-                admin = u.admin(user);    
-          
+            User u = new User();
+            currentUser = u.verifyUser(user, password);
+            String userCurr = u.getCurrentUser();
+            admin = u.admin(user);    
+
             if (currentUser){
                 u.updateToCurrentUser(user);
             }
@@ -102,15 +102,15 @@ public class Manage extends HttpServlet {
                 this.user = userCurr;
                 currentUser = true;
             }
-            
+
             if (admin){
                 new Admin().doGet(request, response, cfg);
             }
             else {
-            try{
-                generatePage(request, out);
-            } catch(Exception e){
-            }
+                try{
+                    generatePage(request, out);
+                } catch(Exception e){
+                }
             }
 
         }
@@ -136,19 +136,19 @@ public class Manage extends HttpServlet {
             if (currentUser) {
                 root.put("CURRENTUSER", user);           
                 this.user = user; 
-             
+
                 // Get all the stories
-                Story s = new Story();
-                HashMap<Integer, String> list = s.getStoryList();
+                //      Story s = new Story();
+                //        HashMap<Integer, String> list = s.getStoryList();
 
-      
-            root.put("STORYLINK1","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/1/1");
-            root.put("STORYLINK2","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/2/1");
-            root.put("STORYLINK3","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/3/1");
-            root.put("STORYLINK4","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/4/1");
 
-}
-            
+                root.put("STORYLINK1","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/1/1");
+                root.put("STORYLINK2","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/2/1");
+                root.put("STORYLINK3","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/3/1");
+                root.put("STORYLINK4","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/4/1");
+
+            }
+
             Integer n = (Integer) session.getAttribute("visits");
 
             if (n==null)
@@ -163,7 +163,7 @@ public class Manage extends HttpServlet {
             root.put("VISITS",n.toString());
 
             /* Get the template (uses cache internally) */
-                Template temp = cfg.getTemplate("quiz.ftl");
+            Template temp = cfg.getTemplate("quiz.ftl");
 
             /* Merge data-model with template */
             temp.process(root, out);

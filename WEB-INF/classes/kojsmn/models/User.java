@@ -85,7 +85,7 @@ public class User{
             System.err.println(err);
         }
     }
-    
+
     public void resetCurrent(){
         String sql;
         PreparedStatement stmt;
@@ -121,7 +121,7 @@ public class User{
             return null;
         }
         return null;
-        
+
 
     }
 
