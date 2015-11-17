@@ -51,13 +51,15 @@ public class Default extends HttpServlet {
             }
 
             // Check to see if user is in Database!
-            User u = new User();
-            currentUser = u.verifyUser(user, password);
-            
-            if (currentUser){
-                u.updateToCurrentUser(user);
-                // update to current User so that username can be tracked
-            }                
+                User u = new User();
+                currentUser = u.verifyUser(user, password);
+                String userCurr = u.getCurrentUser();
+    
+          
+            if (currentUser && userCurr != null){
+                this.user = userCurr;
+                currentUser = true;
+            }
 
             try{
                 generatePage(request, out);

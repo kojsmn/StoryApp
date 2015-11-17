@@ -19,6 +19,7 @@ import java.net.*;
 public class Dispatcher extends HttpServlet {
     public Configuration cfg = null;
     public String user = "";
+    public Log log = new Log("Story App log");
 
     protected void doGet(HttpServletRequest request, HttpServletResponse
 response) throws ServletException, IOException {
@@ -43,14 +44,18 @@ response) throws ServletException, IOException {
 
         if (parts.length > 3) {
             if ("story".equals(parts[3])) {
+                log.log("Going into Story Content " + path);
                 new StoryContent().doGet(request,response,cfg);
             }
             else {
+                log.log("Going into Default " + path);
                 new Default().doGet(request,response,cfg);
             }
                 
-        } else
-            new Default().doGet(request,response,cfg);
+        } else{
+            log.log("Going into Default " + path);
+           new Default().doGet(request,response,cfg);
+        }
     }
 
     public String getUser(){

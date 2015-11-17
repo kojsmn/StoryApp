@@ -35,6 +35,7 @@ public class User{
 
             if (rs.next()){
                 id = rs.getInt(1);
+                updateToCurrentUser(username);
                 return true;
             }
             else{
