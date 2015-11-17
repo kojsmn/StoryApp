@@ -59,6 +59,17 @@ response) throws ServletException, IOException {
                 log.log("Going into Story Content " + path);
                 new StoryContent().doGet(request,response,cfg);
             }
+            else if ("admin".equals(parts[3]){
+                if ("manage".equals(parts[4]){
+                    new Manage().doGet(request, response, cfg);
+                }
+                else if ("edit".equals(parts[4]){
+                    new Edit().doGet(request, reponse, cfg);
+                }               
+                else if ("delete".equals(parts[4]){
+                    new Delete().doGet(request, response, cfg);
+                }
+            }
             else {
                 log.log("Going into Default " + path);
 //                new Default().doPost(request,response,cfg);

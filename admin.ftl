@@ -3,7 +3,8 @@
 <div class="wrapper">
 <head>
 
-<link rel="stylesheet" href="http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/story.css">
+<link rel="stylesheet"
+href="http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/story.css">
 
 <header class="header">
 <div id="image">
@@ -11,7 +12,7 @@
 </div>
 
 <div id="textHead">
-<h> Story Reader</h>
+<h> Story Reader ADMIN</h>
 </div>
 
 </header>
@@ -36,10 +37,8 @@ Story 4
 <br>
 <#else>
 <a href=${STORYLINK1}>Story 1</a>
-<#if (DELETE??)>
-Delete
-Edit {EDITSTORY1}
-</#if>
+<a href=${DELETESTORY1}>Delete</a>
+<a href=${EDITSTORY1}>Edit</a>
 <br>
 <a href=${STORYLINK2}>Story 2</a>
 <br>
@@ -68,20 +67,16 @@ Password:
 </FORM>
 <#else>
 <tr><td>Username: </td><td>${CURRENTUSER}</td></td>
-
 </#if>
 </div>
 </article>
 </body>
 
 <footer class="footer">
-<#if (EDITSTORY??)>
-<a href = ${EDITSTORY}> Edit Stories </a>
-<br>
 <a href = ${MANAGEUSERS}>Manage Users </a>
-</#if>
 
 <#include "footer.ftl">
 </footer>
 </div>
 </html>
+                  

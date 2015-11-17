@@ -60,6 +60,7 @@ public class User{
 
             if (rs.next()){
                 admin = rs.getBoolean(1);
+                updateToCurrentUser(username);
                 if (admin == true)
                     return true;
             }

@@ -165,6 +165,25 @@ public class Story{
 
     }
 
+
+    public HashMap<Integer,String> getStoryList() {
+        HashMap<Integer,String> list = new HashMap<Integer,String>();
+
+        String sql = "SELECT id, Title FROM Stories ORDER BY Title";
+        try {
+            Statement stmt = db.conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                list.put(rs.getInt("id"),rs.getString("Title"));
+            }
+        } catch (Exception err) {
+            System.err.println("getStoryList error " + err);
+            return null;
+        }
+        return list;
+
+    }
+
     public void editStory(){
     }
 

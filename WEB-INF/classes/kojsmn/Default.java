@@ -17,7 +17,7 @@ import javax.servlet.*;
 import java.util.ArrayList;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import kojsmn.models.User;
+import kojsmn.models.*;
 
 
 public class Default extends HttpServlet { 
@@ -26,6 +26,7 @@ public class Default extends HttpServlet {
     String user = "";
     String password = "";
     boolean currentUser = false;
+    boolean admin = false;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse
             response, Configuration cfg) throws ServletException, IOException{
@@ -46,7 +47,7 @@ public class Default extends HttpServlet {
                 User u = new User();
                 currentUser = u.verifyUser(user, password);
                 String userCurr = u.getCurrentUser();
-
+                admin = u.admin(user);
 
             if (currentUser){
                 u.updateToCurrentUser(user);
@@ -56,9 +57,16 @@ public class Default extends HttpServlet {
                 currentUser = true;
             }
 
+             if (admin){
+                new Admin().doGet(request, response, cfg);
+            }
+            else {
+
+
             try{
                 generatePage(request, out);
             } catch(Exception e){
+            }
             }
 
 
@@ -85,7 +93,7 @@ public class Default extends HttpServlet {
                 User u = new User();
                 currentUser = u.verifyUser(user, password);
                 String userCurr = u.getCurrentUser();
-    
+                admin = u.admin(user);    
           
             if (currentUser){
                 u.updateToCurrentUser(user);
@@ -94,10 +102,15 @@ public class Default extends HttpServlet {
                 this.user = userCurr;
                 currentUser = true;
             }
-
+            
+            if (admin){
+                new Admin().doGet(request, response, cfg);
+            }
+            else {
             try{
                 generatePage(request, out);
             } catch(Exception e){
+            }
             }
 
         }
@@ -124,7 +137,12 @@ public class Default extends HttpServlet {
                 root.put("CURRENTUSER", user);           
                 this.user = user; 
              
+                // Get all the stories
+                Story s = new Story();
+                HashMap<Integer, String> list = s.getStoryList();
 
+            root.put("STORIES", list);
+      
             root.put("STORYLINK1","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/1/1");
             root.put("STORYLINK2","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/2/1");
             root.put("STORYLINK3","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/3/1");
@@ -146,7 +164,7 @@ public class Default extends HttpServlet {
             root.put("VISITS",n.toString());
 
             /* Get the template (uses cache internally) */
-            Template temp = cfg.getTemplate("quiz.ftl");
+                Template temp = cfg.getTemplate("quiz.ftl");
 
             /* Merge data-model with template */
             temp.process(root, out);

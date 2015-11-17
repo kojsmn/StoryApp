@@ -1,8 +1,9 @@
 /*
-    Michelle Kojs
+
+   Michelle Kojs
    CSE 383
 
-   Admin Controller
+   Manage Controller
    will display form to login and list of stories
  */
 
@@ -19,7 +20,7 @@ import java.text.SimpleDateFormat;
 import kojsmn.models.*;
 
 
-public class Admin extends HttpServlet {
+public class Manage extends HttpServlet { 
 
     Configuration cfg = null;
     String user = "";
@@ -39,7 +40,7 @@ public class Admin extends HttpServlet {
             password = request.getParameter("password");
 
             if (user != null){
-               request.setAttribute("user", user);
+                request.setAttribute("user", user);
             }
 
             // Check to see if user is in Database!
@@ -47,7 +48,6 @@ public class Admin extends HttpServlet {
                 currentUser = u.verifyUser(user, password);
                 String userCurr = u.getCurrentUser();
                 admin = u.admin(user);
-
 
             if (currentUser){
                 u.updateToCurrentUser(user);
@@ -57,9 +57,16 @@ public class Admin extends HttpServlet {
                 currentUser = true;
             }
 
+             if (admin){
+                new Admin().doGet(request, response, cfg);
+            }
+            else {
+
+
             try{
                 generatePage(request, out);
             } catch(Exception e){
+            }
             }
 
 
@@ -73,16 +80,37 @@ public class Admin extends HttpServlet {
             PrintWriter out = response.getWriter();
 
 
-                // Check to see if user is in Database!
-                User u = new User();
-                String userCurr = u.getCurrentUser();
+            // Check User
+            response.setContentType("text/html");
+            user = request.getParameter("user");
+            password = request.getParameter("password");
 
+            if (user != null){
+                request.setAttribute("user", user);
+            }
+
+            // Check to see if user is in Database!
+                User u = new User();
+                currentUser = u.verifyUser(user, password);
+                String userCurr = u.getCurrentUser();
+                admin = u.admin(user);    
+          
+            if (currentUser){
+                u.updateToCurrentUser(user);
+            }
+            else if (userCurr != null){
                 this.user = userCurr;
                 currentUser = true;
-
+            }
+            
+            if (admin){
+                new Admin().doGet(request, response, cfg);
+            }
+            else {
             try{
                 generatePage(request, out);
             } catch(Exception e){
+            }
             }
 
         }
@@ -105,30 +133,28 @@ public class Admin extends HttpServlet {
             javax.servlet.http.HttpSession sess = req.getSession();
             root.put("SESSIONID", sess.getId());
 
-                root.put("CURRENTUSER", user);
-                this.user = user;
-
+            if (currentUser) {
+                root.put("CURRENTUSER", user);           
+                this.user = user; 
+             
                 // Get all the stories
                 Story s = new Story();
                 HashMap<Integer, String> list = s.getStoryList();
 
-
+      
             root.put("STORYLINK1","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/1/1");
             root.put("STORYLINK2","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/2/1");
             root.put("STORYLINK3","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/3/1");
             root.put("STORYLINK4","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/4/1");
 
-            root.put("DELETESTORY1", "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/admin");
-            root.put("EDITSTORY1", "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/admin/edit");
-
-            root.put("MANAGEUSERS", "admin/manage");
-
+}
+            
             Integer n = (Integer) session.getAttribute("visits");
 
             if (n==null)
                 n = new Integer(0);
             int nn = n.intValue()+1;
-        n=new Integer(nn);
+            n=new Integer(nn);
 
             session.setAttribute("visits",new Integer(nn));
             session.setAttribute("user", user);
@@ -137,7 +163,7 @@ public class Admin extends HttpServlet {
             root.put("VISITS",n.toString());
 
             /* Get the template (uses cache internally) */
-                Template temp = cfg.getTemplate("admin.ftl");
+                Template temp = cfg.getTemplate("quiz.ftl");
 
             /* Merge data-model with template */
             temp.process(root, out);
@@ -152,4 +178,7 @@ public class Admin extends HttpServlet {
         return f.format(t);
     }
 }
+
+
+
 
