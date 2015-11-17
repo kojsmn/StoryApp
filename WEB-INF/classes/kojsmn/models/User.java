@@ -69,6 +69,44 @@ public class User{
         return false;
     }
 
+    public void updateToCurrentUser(String user){
+        String sql;
+        PreparedStatement stmt;
+
+        try {
+            sql = "UPDATE User SET CurrentUser = true WHERE username=?";
+            stmt = db.conn.prepareStatement(sql);
+            stmt.setString(1, user);
+            stmt.executeUpdate();
+
+        } catch (Exception err){
+            System.err.println(err);
+        }
+    }
+
+    public String getCurrentUser(){
+        String sql;
+        PreparedStatement stmt;
+        ResultSet rs;
+
+        try {
+            sql = "SELECT username FROM User WHERE CurrentUser = true";
+            stmt = db.conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
+
+            if (rs.next()){
+                return rs.getString(1);
+            }
+
+        } catch (Exception err){
+            System.err.println(err);
+            return null;
+        }
+        return null;
+        
+
+    }
+
     public void resetPassword(String username){
     }
 
@@ -137,7 +175,7 @@ public class User{
 
         System.out.println("Testing invalid user - " + u.verifyUser("asdfasdf","asdfasdf"));
         System.out.println("Testing admin - yes  " + u.admin("Michelle81"));
-        
+
         System.out.println("Testing admin - no  " + u.admin("test"));
     }
 }

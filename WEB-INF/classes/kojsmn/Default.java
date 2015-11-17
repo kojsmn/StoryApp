@@ -55,6 +55,7 @@ public class Default extends HttpServlet {
             currentUser = u.verifyUser(user, password);
             
             if (currentUser){
+                u.updateToCurrentUser(user);
                 // update to current User so that username can be tracked
             }                
 
