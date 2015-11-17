@@ -15,8 +15,8 @@ href="http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/story.css">
 <div id="textHead">
 <h> Story Reader</h>
 <br>
-<h> ID: h${ID}h </h>
 <h> Title: ${TITLE} </h>
+<br>
 <h> Author: ${AUTHOR} </h>
 </div>
 
@@ -53,7 +53,7 @@ ${CONTENT}
 <#if (!USER??)>
 <#else>
 <div id="user">
-<tr><td>Name:</td><td>${USER}</td></td>
+<tr><td>Username: </td><td>${USER}</td></td>
 </div>
 
 </#if>

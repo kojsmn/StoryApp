@@ -49,21 +49,21 @@ Story 4
 
 <article class="identity">
 <#if (!CURRENTUSER??)>
-<FORM METHOD='Get' ACTION="">
+<FORM METHOD='Post' ACTION="">
 <div id="user">
-UserName:
+Username:
 <input type='text' size=25 name='user'>
 </div>
 <div id="email">
 Password:
-<input type='text' size=25 name='password'>
+<input type='password' size=25 name='password'>
 </div>
 <div id="submit">
 <input type='submit' value='Enter'>
 </div>
 </FORM>
 <#else>
-<tr><td>Name:</td><td>${CURRENTUSER}</td></td>
+<tr><td>Username: </td><td>${CURRENTUSER}</td></td>
 
 </#if>
 </div>

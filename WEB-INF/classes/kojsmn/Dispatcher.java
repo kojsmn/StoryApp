@@ -22,10 +22,16 @@ public class Dispatcher extends HttpServlet {
     public String user = "";
     public Log log = new Log("Story App log");
 
-    public Dispatcher() throws Exception{
+    public Dispatcher() throws IOException{
         User u = new User();
         u.resetCurrent();
     }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse
+response) throws ServletException, IOException{
+        new Default().doPost(request, response, cfg);
+    }
+
 
     protected void doGet(HttpServletRequest request, HttpServletResponse
 response) throws ServletException, IOException {
@@ -55,12 +61,15 @@ response) throws ServletException, IOException {
             }
             else {
                 log.log("Going into Default " + path);
-                new Default().doGet(request,response,cfg);
+//                new Default().doPost(request,response,cfg);
+                doPost(request, response);
+
             }
                 
         } else{
             log.log("Going into Default " + path);
-           new Default().doGet(request,response,cfg);
+    //       new Default().doPost(request,response,cfg);
+            doPost(request, response);
         }
     }
 

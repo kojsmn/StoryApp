@@ -28,7 +28,38 @@ public class Default extends HttpServlet {
     boolean currentUser = false;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse
-            response) throws ServletException, IOException{
+            response, Configuration cfg) throws ServletException, IOException{
+         this.cfg = cfg;
+            PrintWriter out = response.getWriter();
+
+
+            // Check User
+            response.setContentType("text/html");
+            user = request.getParameter("user");
+            password = request.getParameter("password");
+
+            if (user != null){
+                request.setAttribute("user", user);
+            }
+
+            // Check to see if user is in Database!
+                User u = new User();
+                currentUser = u.verifyUser(user, password);
+                String userCurr = u.getCurrentUser();
+
+
+            if (currentUser){
+                u.updateToCurrentUser(user);
+            }
+            else if (userCurr != null){
+                this.user = userCurr;
+                currentUser = true;
+            }
+
+            try{
+                generatePage(request, out);
+            } catch(Exception e){
+            }
 
 
     }
