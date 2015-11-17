@@ -15,11 +15,17 @@ import java.util.ArrayList;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.net.*;
+import kojsmn.models.*;
 
 public class Dispatcher extends HttpServlet {
     public Configuration cfg = null;
     public String user = "";
     public Log log = new Log("Story App log");
+
+    public Dispatcher() throws Exception{
+        User u = new User();
+        u.resetCurrent();
+    }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse
 response) throws ServletException, IOException {

@@ -56,7 +56,10 @@ public class Default extends HttpServlet {
                 String userCurr = u.getCurrentUser();
     
           
-            if (currentUser && userCurr != null){
+            if (currentUser){
+                u.updateToCurrentUser(user);
+            }
+            else if (userCurr != null){
                 this.user = userCurr;
                 currentUser = true;
             }

@@ -84,6 +84,22 @@ public class User{
             System.err.println(err);
         }
     }
+    
+    public void resetCurrent(){
+        String sql;
+        PreparedStatement stmt;
+
+        try {
+            sql = "UPDATE User SET CurrentUser = false";
+            stmt = db.conn.prepareStatement(sql);
+            stmt.executeUpdate();
+
+        } catch (Exception err){
+            System.err.println(err);
+        }
+
+
+    }
 
     public String getCurrentUser(){
         String sql;
