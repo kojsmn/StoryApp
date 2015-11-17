@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import kojsmn.models.*;
+import java.net.*;
 
 
 public class Delete extends HttpServlet { 
@@ -53,12 +54,11 @@ public class Delete extends HttpServlet {
         System.out.println(path);
 
         id = Integer.parseInt(parts[5]);
+        
+        Story s = new Story();
+        s.delete(id);
              
-            try{
-                generatePage(request, out);
-            } catch(Exception e){
-            }
-
+//        new Admin().doGet(request, response, cfg);
         }
 
     public String getEmail(){
@@ -75,38 +75,7 @@ public class Delete extends HttpServlet {
             /* Create a data-model */
             Map<String,String> root = new HashMap<String,String>();
             HttpSession session = req.getSession();
-            root.put("WELCOME", "Welcome to the Story Reader!");
             javax.servlet.http.HttpSession sess = req.getSession();
-            root.put("SESSIONID", sess.getId());
-
-                root.put("CURRENTUSER", user);           
-                this.user = user; 
-             
-                // Get all the stories
-                Story s = new Story();
-                HashMap<Integer, String> list = s.getStoryList();
-
-        //        root.put("STORIES", list);
-      
-            root.put("STORYLINK1","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/1/1");
-            root.put("STORYLINK2","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/2/1");
-            root.put("STORYLINK3","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/3/1");
-            root.put("STORYLINK4","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/4/1");
-
-            
-            Integer n = (Integer) session.getAttribute("visits");
-
-            if (n==null)
-                n = new Integer(0);
-            int nn = n.intValue()+1;
-            n=new Integer(nn);
-
-            session.setAttribute("visits",new Integer(nn));
-            session.setAttribute("user", user);
-            //          session.setAttribute("email", email);
-
-            root.put("VISITS",n.toString());
-
             /* Get the template (uses cache internally) */
                 Template temp = cfg.getTemplate("quiz.ftl");
 

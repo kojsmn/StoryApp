@@ -26,7 +26,7 @@ href="http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/story.css">
 
 <article class="list">
 <div id="stories">
-<#if (!STORYLINK1??)>
+<#if (!STORIES??)>
 Story 1
 <br>
 Story 2
@@ -36,16 +36,18 @@ Story 3
 Story 4
 <br>
 <#else>
-<a href=${STORYLINK1}>Story 1</a>
-<a href=${DELETESTORY1}>Delete</a>
-<a href=${EDITSTORY1}>Edit</a>
-<br>
-<a href=${STORYLINK2}>Story 2</a>
-<br>
-<a href=${STORYLINK3}>Story 3</a>
-<br>
-<a href=${STORYLINK4}>Story 4</a>
-<br>
+<ul>
+    <#list STORIES?keys as key>
+        <li>
+        <a href="http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/${key}/1">${STORIES[key]}</a>
+        <a
+href="http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/admin/${key}">Delete</a>
+        <a href =
+"http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/admin/edit/${key}/1">Edit</a>
+        </li>
+    </#list>
+
+</ul>
 </#if>
 </div>
 </article>

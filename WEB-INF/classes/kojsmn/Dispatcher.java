@@ -28,30 +28,30 @@ public class Dispatcher extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse
-response) throws ServletException, IOException{
+            response) throws ServletException, IOException{
         new Default().doPost(request, response, cfg);
     }
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse
-response) throws ServletException, IOException {
+            response) throws ServletException, IOException {
 
         /* ------------------------------------------------------------------------
- * */    
-            /* You should do this ONLY ONCE in the whole application
- * life-cycle:        */    
+         * */    
+        /* You should do this ONLY ONCE in the whole application
+         * life-cycle:        */    
 
-            /* Create and adjust the configuration singleton */
-            cfg = new Configuration(Configuration.VERSION_2_3_22);
-            cfg.setDirectoryForTemplateLoading(new File("/opt/jetty/webapps/StoryApp/"));
-            cfg.setDefaultEncoding("UTF-8");
-        
+        /* Create and adjust the configuration singleton */
+        cfg = new Configuration(Configuration.VERSION_2_3_22);
+        cfg.setDirectoryForTemplateLoading(new File("/opt/jetty/webapps/StoryApp/"));
+        cfg.setDefaultEncoding("UTF-8");
+
         //get url
         PrintWriter out = response.getWriter();
         URL url = new URL(request.getRequestURL().toString());
         String path = url.getPath();
         String parts[] = path.split("/");
-        
+
         System.out.println(path);
 
         if (parts.length > 3) {
@@ -59,29 +59,39 @@ response) throws ServletException, IOException {
                 log.log("Going into Story Content " + path);
                 new StoryContent().doGet(request,response,cfg);
             }
-            else if ("admin".equals(parts[3]){
-                if ("manage".equals(parts[4]){
-                    new Manage().doGet(request, response, cfg);
+            else if ("admin".equals(parts[3])){
+                if (parts.length > 4){
+                    if ("manage".equals(parts[4])){
+                        new Manage().doGet(request, response, cfg);
+                    }
+                    else if ("edit".equals(parts[4])){
+                        new Edit().doGet(request, response, cfg);
+                    }               
+                    else if ("delete".equals(parts[4])){
+                        new Delete().doGet(request, response, cfg);
+                    }
+                    else {
+                        new Admin().doGet(request, response, cfg);
+                    }
                 }
-                else if ("edit".equals(parts[4]){
-                    new Edit().doGet(request, reponse, cfg);
-                }               
-                else if ("delete".equals(parts[4]){
-                    new Delete().doGet(request, response, cfg);
+                else {
+                    new Admin().doGet(request, response, cfg);
                 }
-            }
+            }                
             else {
                 log.log("Going into Default " + path);
-//                new Default().doPost(request,response,cfg);
+                //                new Default().doPost(request,response,cfg);
                 doPost(request, response);
 
             }
-                
+
+
         } else{
             log.log("Going into Default " + path);
-    //       new Default().doPost(request,response,cfg);
+            //       new Default().doPost(request,response,cfg);
             doPost(request, response);
         }
+
     }
 
     public String getUser(){

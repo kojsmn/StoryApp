@@ -134,13 +134,18 @@ public class Story{
         }
     }
 
-    public boolean deleteStory(int id){
+    public boolean delete(int id){
         String sql;
         PreparedStatement stmt;
         ResultSet rs;
 
         try {
             sql = "DELETE FROM Stories WHERE id=?";
+            stmt = db.conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+
+            sql = "DELETE FROM Page WHERE id=?";
             stmt = db.conn.prepareStatement(sql);
             stmt.setInt(1, id);
             stmt.executeUpdate();
@@ -166,15 +171,15 @@ public class Story{
     }
 
 
-    public HashMap<Integer,String> getStoryList() {
-        HashMap<Integer,String> list = new HashMap<Integer,String>();
+    public HashMap<String,String> getStoryList() {
+        HashMap<String,String> list = new HashMap<String,String>();
 
         String sql = "SELECT id, Title FROM Stories ORDER BY Title";
         try {
             Statement stmt = db.conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
-                list.put(rs.getInt("id"),rs.getString("Title"));
+                list.put(Integer.toString(rs.getInt("id")), rs.getString("Title"));
             }
         } catch (Exception err) {
             System.err.println("getStoryList error " + err);

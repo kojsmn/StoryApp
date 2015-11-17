@@ -99,7 +99,7 @@ public class Admin extends HttpServlet {
         Exception {
 
             /* Create a data-model */
-            Map<String,String> root = new HashMap<String,String>();
+            Map<String,Object> root = new HashMap<String,Object>();
             HttpSession session = req.getSession();
             root.put("WELCOME", "Welcome to the Story Reader!");
             javax.servlet.http.HttpSession sess = req.getSession();
@@ -110,14 +110,11 @@ public class Admin extends HttpServlet {
 
                 // Get all the stories
                 Story s = new Story();
-                HashMap<Integer, String> list = s.getStoryList();
+            HashMap<String, String> stories = s.getStoryList();
 
+            root.put("STORIES", stories);
 
-            root.put("STORYLINK1","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/1/1");
-            root.put("STORYLINK2","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/2/1");
-            root.put("STORYLINK3","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/3/1");
-            root.put("STORYLINK4","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/4/1");
-
+            
             root.put("DELETESTORY1", "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/admin");
             root.put("EDITSTORY1", "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/admin/edit");
 

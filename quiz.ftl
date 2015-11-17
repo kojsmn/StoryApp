@@ -25,7 +25,7 @@
 
 <article class="list">
 <div id="stories">
-<#if (!STORYLINK1??)>
+<#if (!STORIES??)>
 Story 1
 <br>
 Story 2
@@ -35,18 +35,15 @@ Story 3
 Story 4
 <br>
 <#else>
-<a href=${STORYLINK1}>Story 1</a>
-<#if (DELETE??)>
-Delete
-Edit {EDITSTORY1}
-</#if>
-<br>
-<a href=${STORYLINK2}>Story 2</a>
-<br>
-<a href=${STORYLINK3}>Story 3</a>
-<br>
-<a href=${STORYLINK4}>Story 4</a>
-<br>
+<ul>
+    <#list STORIES?keys as key>
+        <li>
+        <a
+href="http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/${key}/1">${STORIES[key]}</a>
+        </li>
+    </#list>
+
+</ul>
 </#if>
 </div>
 </article>
@@ -75,10 +72,8 @@ Password:
 </body>
 
 <footer class="footer">
-<#if (EDITSTORY??)>
-<a href = ${EDITSTORY}> Edit Stories </a>
-<br>
-<a href = ${MANAGEUSERS}>Manage Users </a>
+<#if (ADMIN??)>
+<a href = ${ADMIN}> Admin </a>
 </#if>
 
 <#include "footer.ftl">

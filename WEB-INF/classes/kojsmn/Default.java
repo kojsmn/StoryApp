@@ -30,43 +30,38 @@ public class Default extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse
             response, Configuration cfg) throws ServletException, IOException{
-         this.cfg = cfg;
-            PrintWriter out = response.getWriter();
+        this.cfg = cfg;
+        PrintWriter out = response.getWriter();
 
 
-            // Check User
-            response.setContentType("text/html");
-            user = request.getParameter("user");
-            password = request.getParameter("password");
+        // Check User
+        response.setContentType("text/html");
+        user = request.getParameter("user");
+        password = request.getParameter("password");
 
-            if (user != null){
-                request.setAttribute("user", user);
-            }
+        if (user != null){
+            request.setAttribute("user", user);
+        }
 
-            // Check to see if user is in Database!
-                User u = new User();
-                currentUser = u.verifyUser(user, password);
-                String userCurr = u.getCurrentUser();
-                admin = u.admin(user);
+        // Check to see if user is in Database!
+        User u = new User();
+        currentUser = u.verifyUser(user, password);
+        String userCurr = u.getCurrentUser();
+        admin = u.admin(user);
 
-            if (currentUser){
-                u.updateToCurrentUser(user);
-            }
-            else if (userCurr != null){
-                this.user = userCurr;
-                currentUser = true;
-            }
+        if (currentUser){
+            u.updateToCurrentUser(user);
+        }
+        else if (userCurr != null){
+            this.user = userCurr;
+            currentUser = true;
+        }
 
-             if (admin){
-                new Admin().doGet(request, response, cfg);
-            }
-            else {
 
 
             try{
                 generatePage(request, out);
             } catch(Exception e){
-            }
             }
 
 
@@ -90,11 +85,11 @@ public class Default extends HttpServlet {
             }
 
             // Check to see if user is in Database!
-                User u = new User();
-                currentUser = u.verifyUser(user, password);
-                String userCurr = u.getCurrentUser();
-                admin = u.admin(user);    
-          
+            User u = new User();
+            currentUser = u.verifyUser(user, password);
+            String userCurr = u.getCurrentUser();
+            admin = u.admin(user);    
+
             if (currentUser){
                 u.updateToCurrentUser(user);
             }
@@ -102,16 +97,11 @@ public class Default extends HttpServlet {
                 this.user = userCurr;
                 currentUser = true;
             }
-            
-            if (admin){
-                new Admin().doGet(request, response, cfg);
-            }
-            else {
-            try{
-                generatePage(request, out);
-            } catch(Exception e){
-            }
-            }
+
+                try{
+                    generatePage(request, out);
+                } catch(Exception e){
+                }
 
         }
 
@@ -127,7 +117,7 @@ public class Default extends HttpServlet {
         Exception {
 
             /* Create a data-model */
-            Map<String,String> root = new HashMap<String,String>();
+            Map<String, Object> root = new HashMap<String, Object>();
             HttpSession session = req.getSession();
             root.put("WELCOME", "Welcome to the Story Reader!");
             javax.servlet.http.HttpSession sess = req.getSession();
@@ -136,35 +126,22 @@ public class Default extends HttpServlet {
             if (currentUser) {
                 root.put("CURRENTUSER", user);           
                 this.user = user; 
-             
-                // Get all the stories
+
+  // Get all the stories
                 Story s = new Story();
-                HashMap<Integer, String> list = s.getStoryList();
+            HashMap<String, String> stories = s.getStoryList();
 
-            root.put("STORIES", list);
-      
-            root.put("STORYLINK1","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/1/1");
-            root.put("STORYLINK2","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/2/1");
-            root.put("STORYLINK3","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/3/1");
-            root.put("STORYLINK4","http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/4/1");
+            root.put("STORIES", stories);
 
-}
-            
-            Integer n = (Integer) session.getAttribute("visits");
+            }
 
-            if (n==null)
-                n = new Integer(0);
-            int nn = n.intValue()+1;
-            n=new Integer(nn);
-
-            session.setAttribute("visits",new Integer(nn));
             session.setAttribute("user", user);
-            //          session.setAttribute("email", email);
 
-            root.put("VISITS",n.toString());
+            if (admin)
+                root.put("ADMIN", "admin");
 
             /* Get the template (uses cache internally) */
-                Template temp = cfg.getTemplate("quiz.ftl");
+            Template temp = cfg.getTemplate("quiz.ftl");
 
             /* Merge data-model with template */
             temp.process(root, out);
