@@ -27,7 +27,6 @@ public class Delete extends HttpServlet {
     String user = "";
     String password = "";
     boolean currentUser = false;
-    boolean admin = false;
     int id = 0;
 
 
@@ -40,11 +39,6 @@ public class Delete extends HttpServlet {
 
 
             // Check to see if user is in Database!
-                User u = new User();
-                String userCurr = u.getCurrentUser();
-          
-                this.user = userCurr;
-                currentUser = true;
            
             // get story id
         URL url = new URL(request.getRequestURL().toString());
@@ -56,18 +50,9 @@ public class Delete extends HttpServlet {
         id = Integer.parseInt(parts[5]);
         
         Story s = new Story();
-        s.delete(id);
+        s.delete(request.getParameter("story"));
              
-//        new Admin().doGet(request, response, cfg);
         }
-
-    public String getEmail(){
-        return password;
-    }
-
-    public String getUser(){
-        return user;
-    }
 
     private void generatePage(HttpServletRequest req, PrintWriter out) throws
         Exception {

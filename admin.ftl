@@ -40,8 +40,9 @@ Story 4
     <#list STORIES?keys as key>
         <li>
         <a href="http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/story/${key}/1">${STORIES[key]}</a>
-        <a
-href="http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/admin/${key}">Delete</a>
+        <form action = "" method = "post">
+        <button type="submit" name="story" value=${STORIES[key]} formmethod="Post">Delete</button>
+        </form>
         <a href =
 "http://kojsmn.383.csi.miamioh.edu:8080/StoryApp/servlet/admin/edit/${key}/1">Edit</a>
         </li>

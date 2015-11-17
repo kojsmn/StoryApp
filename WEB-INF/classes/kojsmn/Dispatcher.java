@@ -21,6 +21,7 @@ public class Dispatcher extends HttpServlet {
     public Configuration cfg = null;
     public String user = "";
     public Log log = new Log("Story App log");
+    public String thing = "";
 
     public Dispatcher() throws IOException{
         User u = new User();
@@ -29,8 +30,19 @@ public class Dispatcher extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse
             response) throws ServletException, IOException{
-        new Default().doPost(request, response, cfg);
+        if (request.getParameter("story") != null){
+            thing = request.getParameter("story");
+            log.log("Parameter: " + thing);
+            Story s = new Story();
+            boolean d = s.delete(request.getParameter("story"));
+            log.log("deleted: " + d);
+            new Admin().doGet(request,response,cfg);
+        }
+        else {
+            new Default().doPost(request, response, cfg);
+        }
     }
+
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse

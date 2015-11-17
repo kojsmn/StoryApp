@@ -31,31 +31,10 @@ public class Admin extends HttpServlet {
             response, Configuration cfg) throws ServletException, IOException{
          this.cfg = cfg;
             PrintWriter out = response.getWriter();
-
-
-            // Check User
-            response.setContentType("text/html");
-            user = request.getParameter("user");
-            password = request.getParameter("password");
-
-            if (user != null){
-               request.setAttribute("user", user);
-            }
-
-            // Check to see if user is in Database!
-                User u = new User();
-                currentUser = u.verifyUser(user, password);
-                String userCurr = u.getCurrentUser();
-                admin = u.admin(user);
-
-
-            if (currentUser){
-                u.updateToCurrentUser(user);
-            }
-            else if (userCurr != null){
-                this.user = userCurr;
-                currentUser = true;
-            }
+            admin = true;
+//            new Delete().doGet(request, response, cfg);
+            Story s = new Story();
+            s.delete(request.getParameter("story"));
 
             try{
                 generatePage(request, out);
@@ -120,18 +99,8 @@ public class Admin extends HttpServlet {
 
             root.put("MANAGEUSERS", "admin/manage");
 
-            Integer n = (Integer) session.getAttribute("visits");
-
-            if (n==null)
-                n = new Integer(0);
-            int nn = n.intValue()+1;
-        n=new Integer(nn);
-
-            session.setAttribute("visits",new Integer(nn));
             session.setAttribute("user", user);
-            //          session.setAttribute("email", email);
 
-            root.put("VISITS",n.toString());
 
             /* Get the template (uses cache internally) */
                 Template temp = cfg.getTemplate("admin.ftl");

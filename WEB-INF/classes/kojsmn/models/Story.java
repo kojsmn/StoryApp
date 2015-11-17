@@ -134,21 +134,31 @@ public class Story{
         }
     }
 
-    public boolean delete(int id){
+    public boolean delete(String title){
         String sql;
         PreparedStatement stmt;
         ResultSet rs;
+        int id = 0;
 
         try {
-            sql = "DELETE FROM Stories WHERE id=?";
+            sql = "SELECT id FROM Stories WHERE title=?";
             stmt = db.conn.prepareStatement(sql);
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
+            stmt.setString(1, title);
+            rs = stmt.executeQuery();
+            if (rs.next()){
+                id = rs.getInt(1);
+            }
 
             sql = "DELETE FROM Page WHERE id=?";
             stmt = db.conn.prepareStatement(sql);
             stmt.setInt(1, id);
             stmt.executeUpdate();
+
+             sql = "DELETE FROM Stories WHERE title=?";
+            stmt = db.conn.prepareStatement(sql);
+            stmt.setString(1, title);
+            stmt.executeUpdate();
+
 
             // check to see if deleted
             sql = "SELECT * FROM Stories WHERE id=?";
@@ -160,12 +170,10 @@ public class Story{
                 System.err.println("Error deleting Story");
                 return false;
             }
-            else {
                 return true;
-            }
         } catch (Exception err){
             System.err.println("Error deleting Story " + err);
-            return true;
+            return false;
         }
 
     }
